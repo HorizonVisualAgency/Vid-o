@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Horizon Visual Agency</title>
+  <style>
+    :root {
+      --primary: #4AAFE3;
+      --primary-light: #AEDFF9;
+      --accent: #F9E18C;
+      --accent-light: #FEF7D1;
+      --success: #16a34a;
+      --danger: #ef4444;
+      --radius: 1rem;
+      --bg: #E3F2FD;
+      --bg-alt: #FFFFFF;
+      --text: #1a1a1a;
+      --shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+    body {
+      background: linear-gradient(to bottom right, var(--bg), var(--bg-alt));
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+    .navbar { display: flex; justify-content: space-between; align-items: center; background: #fff; margin: 2rem auto; padding: 1rem 2rem; border-radius: 2rem; width: 80%; max-width: 1100px; box-shadow: var(--shadow); }
+    .navbar nav a { margin: 0 1.2rem; text-decoration: none; color: var(--text); font-weight: 500; }
+    .navbar .cta { background: var(--accent); padding: 0.5rem 1rem; border-radius: 1rem; text-decoration: none; color: var(--text); font-weight: 600; transition: all 0.3s ease; }
+    .navbar .cta:hover { background: var(--accent-light); box-shadow: 0 0 10px rgba(249, 225, 140, 0.7); }
+    .section { padding: 4rem 0; }
+    .hero { text-align: center; background: linear-gradient(to bottom, var(--bg), var(--bg-alt)); }
+    .hero h1 { font-size: 3rem; font-weight: 800; margin-bottom: 1rem; }
+    .hero p { max-width: 700px; margin: 0 auto 2rem; font-size: 1.1rem; color: #444; }
+    .hero .btn { background: var(--accent); padding: 1rem 2rem; font-weight: bold; border-radius: 2rem; text-decoration: none; color: #000; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .hero .btn:hover { transform: scale(1.05); background: var(--accent); box-shadow: 0 0 15px rgba(249, 225, 140, 0.8); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem; }
+    .grid.services .card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .grid.services .card:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+    .grid.services .card{position:relative;overflow:visible;}
+    .grid.services .card .detail{position:absolute;left:0;top:100%;width:100%;background:#fff;padding:1rem;border-radius:0.75rem;box-shadow:0 8px 24px rgba(0,0,0,0.1);opacity:0;visibility:hidden;transform:translateY(-10px);transition:all .3s ease;}
+    .grid.services .card:hover .detail{opacity:1;visibility:visible;transform:translateY(0);}
+    .card { background: #fff; padding: 2rem; border-radius: var(--radius); box-shadow: 0 4px 10px rgba(0,0,0,0.06); text-align: center; transition: transform 0.3s ease; }
+    .card:hover { transform: scale(1.05); }
+    .card i { font-size: 2rem; margin-bottom: 1rem; color: #4f46e5; }
+    .comparison-container { display:flex; gap:2rem; justify-content:center; flex-wrap:wrap; margin-top:2rem; }
+    .comparison-card { flex:1 1 320px; max-width:350px; border:2px solid #e2e8f0; border-radius:var(--radius); overflow:hidden; transition:transform .3s ease; }
+    .comparison-card:hover { transform:scale(1.03); }
+    .comparison-header { background:#ffffff; padding:1rem; text-align:center; font-size:1.3rem; font-weight:700; border-bottom:2px solid #e2e8f0; }
+    .comparison-inner table { width:100%; border-collapse:collapse; }
+    .comparison-inner td { padding:1rem; text-align:center; }
+    .comparison-inner td i.fa-check-circle { color:var(--success); }
+    .comparison-inner td i.fa-times-circle { color:var(--danger); }
+    .offres-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+    .offre-card {
+      background: #ffffff;
+      color: #1a202c;
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .offre-card.highlighted {
+      background: var(--accent-light);
+      border: 2px solid var(--accent);
+      box-shadow: 0 6px 25px rgba(249, 225, 140, 0.4);
+    }
+    .offre-header {
+      background: var(--primary);
+      color: #ffffff;
+      padding: 1rem;
+      border-radius: 0.75rem 0.75rem 0 0;
+      font-size: 1.4rem;
+      margin: -2rem -2rem 1.5rem -2rem;
+      text-align: center;
+    }
+    .offre-card ul {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 2rem;
+    }
+    .offre-card ul li {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      line-height: 1.5;
+      font-size: 1rem;
+    }
+    .offre-card ul li i {
+      margin-right: 0.75rem;
+      color: var(--success);
+      font-size: 1.1rem;
+    }
+    .testimonial-slider {
+      position: relative;
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      overflow: hidden;
+      /* border: 2px solid var(--primary); */
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      padding-bottom: 1rem;
+    }
+    .testimonial-slider {
+      border: none;
+    }
+    .testimonial-slider .inner1 { display: flex; gap: 2rem; animation: scroll-left 20s linear infinite; }
+    .testimonial-slider .inner2 { display: flex; gap: 2rem; animation: scroll-right 20s linear infinite; }
+    .testimonial-slider:hover .inner1,
+    .testimonial-slider:hover .inner2 { animation-play-state: paused; }
+    @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    @keyframes scroll-right { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+    .testimonial-card { flex: 0 0 auto; width: 250px; background: #fff; border-radius: var(--radius); padding: 1.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .testimonial-card:hover { transform: scale(1.05); transition: transform 0.3s ease; }
+    .testimonial-card h4 { font-size: 1.2rem; font-weight: 600; color: #1e3a8a; margin-bottom: 0.5rem; }
+    .testimonial-card p { font-size: 1.05rem; font-weight: 500; color: #333; margin-top: 0.5rem; }
+    .stars { color: #facc15; margin-top: 1rem; }
+    .about-section { padding: 4rem 0; background: #f9fafb; }
+    .about-block { display: flex; flex-wrap: wrap; align-items: center; gap: 2rem; margin-bottom: 4rem; }
+    .about-block:nth-child(even) { flex-direction: row-reverse; }
+    .about-image img { width: 100%; border-radius: var(--radius); box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06); }
+    .about-text { flex: 1 1 400px; font-size: 1.05rem; color: #444; line-height: 1.6; }
+    .about-text h3 { font-size: 1.6rem; margin-bottom: 1rem; color: #1f2937; }
+    .cta-section-enhanced { background: linear-gradient(to bottom, var(--bg), var(--bg-alt)); padding: 4rem 0; }
+    .cta-content { max-width: 1100px; margin: 0 auto; padding: 0 2rem; text-align: center; }
+    .cta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin: 2rem 0; }
+    .cta-item { background: #fff; padding: 2rem; border-radius: var(--radius); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
+    .cta-item:hover { transform: scale(1.05); transition: transform 0.3s ease; }
+    .cta-item i { font-size: 2rem; color: #f59e0b; margin-bottom: 1rem; }
+    .btn { background: var(--primary); color: white; text-decoration: none; font-weight: 600; padding: 0.8rem 1.8rem; border-radius: 2rem; transition: all 0.3s ease; }
+    .btn:hover { background: var(--primary-light); box-shadow: 0 0 12px rgba(249, 225, 140, 0.7); }
+    footer { background: #1f2937; color: white; padding: 2rem 1rem; text-align: center; font-size: 0.9rem; }
+    footer .footer-links { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-bottom: 1rem; }
+    footer .footer-btn { background: #374151; color: var(--accent); padding: 0.6rem 1.2rem; border-radius: 2rem; text-decoration: none; font-weight: 500; }
+    footer .social-icons { display: flex; gap: 1rem; justify-content: center; margin-bottom: 1rem; }
+    footer .social-icons a { color: #d1d5db; font-size: 1.5rem; }
+    footer .footer-bottom { font-size: 0.85rem; color: #9ca3af; }
+    .section h2 { text-align: center; margin-bottom: 2rem; }
+    .section#comparatif h2 { text-align: center; margin-bottom: 2rem; }
+    .comparison-container { display:flex; gap:2rem; justify-content:center; flex-wrap:wrap; margin-top:2rem; }
+    .comparison-card { flex:1 1 320px; max-width:350px; border-radius:var(--radius); overflow:hidden; transition:transform .3s ease; }
+    .comparison-card:hover { transform:scale(1.03); }
+    .comparison-header { background:#ffffff; padding:1rem; text-align:center; font-size:1.3rem; font-weight:700; border-radius:var(--radius) var(--radius) 0 0; box-shadow:0 4px 10px rgba(0,0,0,0.05); }
+    .comparison-inner { background:linear-gradient(135deg,#eef6ff,#dbeafe); padding:2rem; }
+    .comparison-inner ul { list-style:none; margin:0; padding:0; }
+    .comparison-inner li { display:flex; align-items:flex-start; margin-bottom:1rem; font-size:1rem; color:var(--text); }
+    .comparison-inner li i { margin-right:0.75rem; margin-top:0.2rem; }
+    .comparison-inner li i.fa-check-circle { color:var(--success); }
+    .comparison-inner li i.fa-times-circle { color:var(--danger); }
+    .testimonial-card .btn-wrapper { margin-top: 1rem; padding-bottom: 0.5rem; }
+    .testimonial-card .btn-small { white-space: nowrap; }
+    .timeline {
+      position: relative;
+      padding: 2rem 0;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: #e2e8f0;
+      transform: translateX(-50%);
+    }
+    .progress-bar {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 4px;
+      height: 0;
+      background: var(--primary);
+      transform: translateX(-50%);
+      transition: height 0.2s ease;
+    }
+    .timeline-item {
+      position: relative;
+      width: 50%;
+      padding: 1rem 2rem;
+    }
+    .timeline-item.left { left: 0; text-align: right; }
+    .timeline-item.right { left: 50%; text-align: left; }
+    .timeline-item .content {
+      background: #fff;
+      padding: 1rem;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      display: inline-block;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      top: 1.5rem;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #cbd5e1;
+      border: 4px solid #fff;
+      box-shadow: 0 0 0 4px #cbd5e1;
+    }
+    .timeline-item.left::before { right: -8px; }
+    .timeline-item.right::before { left: -8px; }
+    #metrics { padding: 4rem 0; background: #fff; }
+    #metrics .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; max-width: 1100px; margin: 0 auto; text-align: center; }
+    #metrics .metric { font-family: 'Inter', sans-serif; }
+    #metrics .metric h3 { font-size: 2.5rem; color: var(--primary); margin-bottom: 0.5rem; }
+    #metrics .metric p { font-size: 1rem; color: #444; }
+    .comparatif-scroll::-webkit-scrollbar{display:none}
+    .comparatif-scroll{-ms-overflow-style:none;scrollbar-width:none}
+    .comparison-wrapper{display:flex;gap:2rem;align-items:flex-start;padding:0 2rem;}
+    .comparison-title{flex:1;position:sticky;top:2rem;margin-left:2rem;}
+    .comparison-title h2{margin-bottom:1rem;}
+    .comparatif-scroll {
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding: 0 2rem;
+      scroll-snap-type: y mandatory;
+    }
+    .comparatif-card {
+      scroll-snap-align: start;
+      margin: 0 auto 4rem;
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 2rem;
+      background: #fff;
+      border-radius: var(--radius);
+      background: #f9fafb;
+      /* border: 2px solid var(--primary); removed as per instructions */
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      transition: transform .3s ease;
+    }
+    .comparatif-card:hover{transform:scale(1.03);}
+    .comparatif-card i,
+    .comparatif-card h3 {
+      color: var(--primary);
+    }
+    .faq-container{display:flex;gap:2rem;align-items:flex-start;padding:0 2rem;}
+    .faq-list{flex:1;}
+    .faq-image{flex:1;text-align:center;}
+    .faq-image img{max-width:100%;border-radius:var(--radius);box-shadow:0 6px 18px rgba(0,0,0,0.06);}
+    .faq-item{background:#fff9db;border:2px solid #facc15;border-radius:0.75rem;padding:1rem;margin-bottom:1rem;}
+    .faq-item summary{cursor:pointer;font-weight:600;font-size:1rem;}
+    .faq-item p{margin-top:0.5rem;font-size:0.95rem;color:#444;}
+    .faq-cta{margin-top:2rem;}
+    .faq-cta p{margin-bottom:1rem;font-size:1.1rem;}
+    .faq-cta .btn{background:var(--primary);color:#fff;}
+    .faq-container{display:flex;flex-wrap:wrap;gap:2rem;align-items:flex-start;padding:0 2rem;}
+    .faq-list{flex:2;}
+    .faq-side{flex:1;display:flex;flex-direction:column;align-items:center;background:#fff;padding:2rem;border-radius:var(--radius);box-shadow:0 4px 10px rgba(0,0,0,0.1);}
+    .faq-image img{border-radius:50%;width:150px;height:150px;object-fit:cover;}
+    .faq-cta-text{font-size:1.2rem;font-weight:600;color:#1e3a8a;margin:1rem 0;}
+    .faq-cta-btn{display:inline-block;background:var(--primary);color:#fff;padding:0.8rem 1.5rem;border-radius:2rem;text-decoration:none;font-weight:600;transition:background .3s ease;}
+    .faq-cta-btn:hover{background:var(--primary-light);}
+    .faq-side { margin-top: 7rem; }
+    .faq-cta-text { white-space: nowrap; }
+    .btn { background: var(--accent); color: #000; text-decoration: none; font-weight: 600; padding: 0.8rem 1.8rem; border-radius: 2rem; transition: box-shadow 0.3s ease, background 0.3s ease; }
+    .btn:hover { background: var(--accent-light); box-shadow: 0 0 12px rgba(249,225,140,0.7); }
+    .offre-card.highlighted { position: relative; background: var(--accent-light); border: 2px solid var(--accent); border-radius: var(--radius); padding: 2.5rem 2rem; box-shadow: 0 0 20px rgba(249,225,140,0.6); transition: transform 0.3s ease, box-shadow 0.3s ease; animation: haloGlow 2s infinite alternate; }
+    .offre-card.highlighted .btn:hover { background: var(--accent); box-shadow: 0 0 15px rgba(249,225,140,0.8); color: #000; }
+    footer .footer-btn:hover { background: var(--accent-light); color: var(--text); }
+    footer .social-icons a:hover { color: var(--accent); }
+    @keyframes haloGlow { from { box-shadow: 0 0 20px rgba(249,225,140,0.6); } to { box-shadow: 0 0 30px rgba(249,225,140,0.8); } }
+     /* Override for the free trial offer CTA */
+     .offre-card.highlighted .btn {
+      background: var(--primary) !important;
+      color: #fff !important;
+    }
+    .offre-card.highlighted .btn:hover {
+      background: var(--primary-light) !important;
+    }
+    /* Override for the highlighted card label */
+    .offre-card.highlighted .label {
+      background: var(--primary) !important;
+      color: #fff !important;
+    }
+
+    .free-text {
+      color: #ffffff !important;
+      text-decoration: underline !important;
+      font-weight: 700;
+    }
+    @keyframes pulseCTA {0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+    .hero .btn {animation:pulseCTA 3s ease-in-out infinite;}
+
+    .section h2 {text-align:center;margin-bottom:3rem;}
+
+    .card:hover, .offre-card:hover, .testimonial-card:hover, .cta-item:hover {
+      transform: scale(1.05);
+    }
+    :root {
+      --primary: #4AAFE3;
+      --primary-light: #AEDFF9;
+      --accent: #F9E18C;
+      --accent-light: #FEF7D1;
+      --bg: #E3F2FD;
+      --bg-alt: #FFFFFF;
+      --text: #1a1a1a;
+      --radius: 1rem;
+      --shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    * {
+      margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif;
+    }
+    body {
+      background: linear-gradient(to bottom right, var(--bg), var(--bg-alt));
+      color: var(--text);
+    }
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+      margin: 2rem auto;
+      padding: 1rem 2rem;
+      border-radius: 2rem;
+      width: 80%;
+      max-width: 1100px;
+      box-shadow: var(--shadow);
+    }
+    .navbar nav a {
+      margin: 0 1.2rem;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 500;
+    }
+    .navbar .cta {
+      background: var(--accent);
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    .navbar .cta:hover {
+      background: var(--accent-light);
+      box-shadow: 0 0 10px rgba(249, 225, 140, 0.7);
+    }
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6rem 2rem;
+      text-align: center;
+      background: radial-gradient(circle at top left, #cdeafe, #ffffff);
+      border-radius: var(--radius);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      margin: 2rem auto;
+      width: 90%;
+      max-width: 1000px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 200px;
+      height: 200px;
+      background: var(--accent-light);
+      border-radius: 50%;
+      opacity: 0.5;
+      z-index: 0;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      bottom: -40px;
+      left: -40px;
+      width: 150px;
+      height: 150px;
+      background: var(--primary-light);
+      border-radius: 50%;
+      opacity: 0.4;
+      z-index: 0;
+    }
+    .hero h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      z-index: 1;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin-bottom: 2rem;
+      color: #444;
+      z-index: 1;
+    }
+    .hero .btn {
+      background: var(--accent);
+      padding: 1rem 2rem;
+      font-weight: bold;
+      border-radius: 2rem;
+      text-decoration: none;
+      color: #000;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: pulseCTA 3s ease-in-out infinite;
+      z-index: 1;
+    }
+    .hero .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(249, 225, 140, 0.8);
+    }
+    @keyframes pulseCTA {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    .section {
+      padding: 4rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .section h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .footer {
+      background: #1f2937;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+      margin-top: 4rem;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+  <div class="navbar">
+    <div><strong>HVA</strong></div>
+    <nav>
+      <a href="#apropos">À propos</a>
+      <a href="#services">Services</a>
+      <a href="#offres">Offres</a>
+      <a href="#avis">Témoignages</a>
+    </nav>
+    <a class="cta" href="https://calendly.com/horizon-visual-agency-meeting/meeting-sur-la-production-de-video" target="_blank">Contact</a>
+  </div>
+
+  <!-- Hero -->
+  <section class="section hero" id="hero" data-aos="fade-up">
+    <div class="container">
+      <h1>Visible localement. Rentable concrètement.</h1>
+      <p>Nous aidons les commerces de proximité à générer +1 000 vues sur leurs vidéos 9:16 en moins de 7 jours.</p>
+      <div class="btn-wrapper">
+        <a href="https://calendly.com/horizon-visual-agency-meeting/meeting-sur-la-production-de-video" class="btn">Réservez votre vidéo</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="section" id="services">
+    <div class="container">
+      <h2>Boostez vos ventes avec nos vidéos 9:16</h2>
+      <div class="grid services">
+        <div class="card" data-aos="fade-up">
+          <i class="fas fa-bolt"></i>
+          <h3>Vidéo Découverte</h3>
+          <p>1 clip 9:16 offert pour prouver l’efficacité de notre format ultra-dynamique.</p>
+          <div class="detail">
+            <h4>Détails du service</h4>
+            <p>– Description plus détaillée du service.<br>– Avantage clé ou bénéfice client.</p>
+          </div>
+        </div>
+        <div class="card" data-aos="fade-up" data-aos-delay="100">
+          <i class="fas fa-play-circle"></i>
+          <h3>Pack 6 Vidéos</h3>
+          <p>6 vidéos 9:16 avec tests d’accroches et montage express.</p>
+          <div class="detail">
+            <h4>Détails du service</h4>
+            <p>– Description plus détaillée du service.<br>– Avantage clé ou bénéfice client.</p>
+          </div>
+        </div>
+        <div class="card" data-aos="fade-up" data-aos-delay="200">
+          <i class="fas fa-layer-group"></i>
+          <h3>Pack 10 Vidéos</h3>
+          <p>10 clips packagés pour un volume maximal et un ROI mesurable.</p>
+          <div class="detail">
+            <h4>Détails du service</h4>
+            <p>– Description plus détaillée du service.<br>– Avantage clé ou bénéfice client.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparatif -->
+  <section class="section" id="comparatif">
+    <div class="comparison-wrapper">
+      <!-- Colonne de gauche : titre fixe -->
+      <div class="comparison-title">
+        <h2>Voici pourquoi notre agence est faite pour vous :</h2>
+      </div>
+      <!-- Colonne de droite : cartes défilantes -->
+      <div class="comparatif-scroll">
+        <!-- Carte 1 -->
+        <div class="comparatif-card" data-aos="fade-up">
+          <i class="fas fa-bolt"></i>
+          <div>
+            <h3>Spécialiste vidéo 9:16</h3>
+            <p>Notre format ultra-rythmé capte l’attention locale.</p>
+          </div>
+        </div>
+        <!-- Carte 2 -->
+        <div class="comparatif-card" data-aos="fade-up">
+          <i class="fas fa-clock"></i>
+          <div>
+            <h3>Livraison en 5 jours</h3>
+            <p>Production et montage rapides pour un impact immédiat.</p>
+          </div>
+        </div>
+        <!-- Carte 3 -->
+        <div class="comparatif-card" data-aos="fade-up">
+          <i class="fas fa-chart-line"></i>
+          <div>
+            <h3>Suivi KPI en temps réel</h3>
+            <p>Visualisez vos performances dès la mise en ligne.</p>
+          </div>
+        </div>
+        <!-- Carte 4 -->
+        <div class="comparatif-card" data-aos="fade-up">
+          <i class="fas fa-users"></i>
+          <div>
+            <h3>Support dédié</h3>
+            <p>Un interlocuteur unique pour suivre votre projet de A à Z.</p>
+          </div>
+        </div>
+        <!-- Carte 5 -->
+        <div class="comparatif-card" data-aos="fade-up">
+          <i class="fas fa-award"></i>
+          <div>
+            <h3>Qualité garantie</h3>
+            <p>Engagement de satisfaction ou refonte gratuite.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Offres -->
+  <section class="section" id="offres" style="background: linear-gradient(135deg, #e0e7ff, #eef2ff);">
+    <div class="container">
+      <h2>Nos Offres</h2>
+      <p class="subtitle" style="text-align:center; margin-bottom:2rem; color:#374151;">
+        Choisissez votre formule idéale : testez sans engagement ou passez à l’action avec un pack complet.
+      </p>
+      <div class="offers-flex" style="display:flex; gap:2rem; justify-content:center; flex-wrap:wrap;">
+        
+        <!-- Offre Essai Gratuit -->
+        <div class="offre-card highlighted" style="flex:1 1 320px; background:#fff; border-radius:1rem; box-shadow:0 8px 24px rgba(0,0,0,0.1); padding:2.5rem; position:relative;">
+          <div class="label" style="position:absolute; top:-1rem; left:50%; transform:translateX(-50%); background:var(--primary); color:#fff; padding:0.5rem 1rem; border-radius:1rem; font-weight:600;">
+            Vidéo d’essai OFFERTE
+          </div>
+          <p style="font-size:1rem; color:#1e3a8a; margin:1.5rem 0; text-align:center;">
+            Testez gratuitement notre format 9:16 — une vidéo pour découvrir notre savoir‑faire sans engagement.
+          </p>
+          <ul style="list-style:none; padding:0; margin-bottom:2rem; color:#374151; line-height:1.6;">
+            <li><i class="fas fa-check-circle" style="color:#16a34a; margin-right:0.5rem;"></i>Concept sur-mesure</li>
+            <li><i class="fas fa-check-circle" style="color:#16a34a; margin-right:0.5rem;"></i>Tournage smartphone & montage</li>
+            <li><i class="fas fa-check-circle" style="color:#16a34a; margin-right:0.5rem;"></i>Livraison sous 5 jours</li>
+            <li><i class="fas fa-check-circle" style="color:#16a34a; margin-right:0.5rem;"></i>Rapport de vues en temps réel</li>
+          </ul>
+          <a href="https://calendly.com/horizon-visual-agency-meeting/meeting-sur-la-production-de-video" class="btn btn-large" style="display:block; text-align:center; background:var(--primary); color:#fff; padding:1rem; border-radius:2rem; text-decoration:none; font-weight:600;">
+            Réservez votre vidéo <span class="free-text">GRATUITE</span>
+          </a>
+        </div>
+        
+        <!-- Offre Pack 6 Vidéos -->
+        <div class="offre-card" style="flex:1 1 320px; background:#fff; border-radius:1rem; box-shadow:0 8px 24px rgba(0,0,0,0.1); padding:2.5rem; position:relative;">
+          <div class="label" style="position:absolute; top:-1rem; left:50%; transform:translateX(-50%); background:var(--primary); color:#fff; padding:0.5rem 1rem; border-radius:1rem; font-weight:600;">
+            Pack de 6 vidéos
+          </div>
+          <p style="font-size:1rem; color:#1e3a8a; margin:1.5rem 0; text-align:center;">
+            Bénéficiez de 6 vidéos 9:16 dynamiques pour booster votre visibilité locale.
+          </p>
+          <ul style="list-style:none; padding:0; margin-bottom:2rem; color:#374151; line-height:1.6;">
+            <li><i class="fas fa-check-circle" style="color:#16a34a; margin-right:0.5rem;"></i>6 concepts originaux</li>
+            <li><i class="fas fa-check-circle" style="color:#16a34a; margin-right:0.5rem;"></i>Tournage & montage express</li>
+            <li><i class="fas fa-check-circle" style="color:#16a34a; margin-right:0.5rem;"></i>Tests d’accroches A/B</li>
+            <li><i class="fas fa-check-circle" style="color:#16a34a; margin-right:0.5rem;"></i>Suivi KPI & reporting</li>
+          </ul>
+          <a href="https://calendly.com/horizon-visual-agency-meeting/meeting-sur-la-production-de-video" class="btn btn-large" style="display:block; text-align:center; background:var(--primary); color:#fff; padding:1rem; border-radius:2rem; text-decoration:none; font-weight:600;">
+            Réservez votre pack
+          </a>
+        </div>
+      
+      </div>
+    </div>
+  </section>
+  <!-- CTA final -->
+  <section class="cta-section-enhanced" data-aos="zoom-in">
+    <div class="cta-content">
+      <h2>Discutons de votre stratégie de visibilité</h2>
+      <p class="subtitle">Prêt à dynamiser votre marketing vidéo ? Découvrez nos offres dédiées :</p>
+      <div class="cta-grid">
+        <div class="cta-item"><i class="fas fa-video"></i><h4>Peu de temps ?</h4><p>On s’occupe de tout. Vous restez concentré sur votre activité.</p></div>
+        <div class="cta-item"><i class="fas fa-film"></i><h4>Déjà un prestataire ?</h4><p>Testez-nous sans engagement et comparez.</p></div>
+        <div class="cta-item"><i class="fas fa-play"></i><h4>Doute sur les résultats ?</h4><p>Nos clients sont visibles. Nos rapports sont clairs. Nos résultats sont concrets.</p></div>
+      </div>
+      <a href="https://calendly.com/horizon-visual-agency-meeting/meeting-sur-la-production-de-video" class="btn btn-large">Réservez votre audit gratuit</a>
+    </div>
+  </section>
+
+  <!-- À propos -->
+  <section class="section about-section" id="apropos">
+    <div class="timeline">
+      <div class="progress-bar"></div>
+      <div class="timeline-item left" data-aos="fade-right">
+        <div class="content">
+          <h3>100 % dédié aux commerces de proximité</h3>
+          <p>Chez HVA, on ne fait que de la vidéo 9:16 ultra-rythmée. Chaque seconde est optimisée pour capter l’attention locale.</p>
+        </div>
+      </div>
+      <div class="timeline-item right" data-aos="fade-left">
+        <div class="content">
+          <h3>Processus transparent et rapide</h3>
+          <p>Brief express, tournage smartphone, montage sous 5 jours et rapport de vues en temps réel. Zéro blabla technique.</p>
+        </div>
+      </div>
+      <div class="timeline-item left" data-aos="fade-right">
+        <div class="content">
+          <h3>Résultats garantis</h3>
+          <p>Notre promesse : au moins 1 000 vues la première semaine ou on refait la vidéo gratuitement.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- Q&A Section -->
+<section class="section faq-section" id="faq">
+  <div class="container faq-container">
+    <!-- Liste des questions -->
+    <div class="faq-list">
+      <h2>Vos questions, nos réponses 🤓</h2>
+      <details class="faq-item">
+        <summary>Comment pouvez-vous être sûr que les vidéos fonctionneront pour moi ?</summary>
+        <p>Nous analysons votre positionnement et adaptons chaque script pour garantir l’engagement local.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Quelle est la différence entre vous et une autre agence ?</summary>
+        <p>Nous sommes spécialisés 9:16, orientés ROI et sans engagement long terme.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Vos packs conviennent-ils à mon secteur ou à mon entreprise ?</summary>
+        <p>Quel que soit votre domaine, nos formats ultra-dynamiques s’adaptent à toutes les activités de proximité.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Combien de temps faut-il pour recevoir les vidéos finalisées ?</summary>
+        <p>De la prise de brief au rendu final, comptez 5 jours ouvrés maximum.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Avez-vous des preuves ou des garanties de vos résultats ?</summary>
+        <p>Garantie de 1 000 vues la première semaine ou on refait la vidéo gratuitement.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Comment se déroule la collaboration ?</summary>
+        <p>Brief express, tournage smartphone, montage, et suivi KPI en temps réel via votre tableau de bord.</p>
+      </details>
+    </div>
+
+    <!-- Bloc photo + CTA -->
+    <div class="faq-side" data-aos="fade-up">
+      <div class="faq-image">
+        <a href="https://ibb.co/HDmcWfG8"><img src="https://i.ibb.co/mCQnLVhW/Agence-Visuelle-Horizon.png" alt="Agence-Visuelle-Horizon" border="0"></a>
+      </div>
+      <p class="faq-cta-text">Vous avez encore des questions ?</p>
+      <a href="https://calendly.com/horizon-visual-agency-meeting/meeting-sur-la-production-de-video" class="btn faq-cta-btn">
+        Prenez rendez-vous&nbsp;<i class="fas fa-arrow-up-right-from-square"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-links">
+      <a href="#" class="footer-btn">Mentions légales</a>
+      <a href="#" class="footer-btn">CGV</a>
+      <a href="#" class="footer-btn">Confidentialité</a>
+      <a href="https://linktr.ee/hva" class="footer-btn">Contact / Linktree</a>
+    </div>
+    <div class="social-icons">
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-linkedin"></i></a>
+      <a href="#"><i class="fab fa-tiktok"></i></a>
+      <a href="#"><i class="fab fa-youtube"></i></a>
+    </div>
+    <div class="footer-bottom">© 2025 Horizon Visual Agency — Tous droits réservés.</div>
+  </footer>
+
+</footer>
+
+</footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>AOS.init();</script>
+  <script>
+    document.addEventListener('scroll', function() {
+      var timeline = document.querySelector('.timeline');
+      var progress = document.querySelector('.progress-bar');
+      if (!timeline || !progress) return;
+      var rect = timeline.getBoundingClientRect();
+      var windowHeight = window.innerHeight;
+      var totalHeight = rect.height;
+      // Start only once the top of the timeline enters the viewport
+      var distance = Math.min(Math.max(windowHeight - rect.top, 0), totalHeight);
+      var percent = 0;
+      if (rect.top <= windowHeight) {
+        percent = Math.min((distance / totalHeight) * 100, 100);
+      }
+      progress.style.height = percent + '%';
+    });
+  </script>
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+  const options = { threshold: 0.5 };
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const target = +el.getAttribute('data-target');
+        let count = 0;
+        const step = target / 200;
+        const inc = () => {
+          count += step;
+          if (count < target) {
+            el.textContent = Math.ceil(count);
+            requestAnimationFrame(inc);
+          } else {
+            el.textContent = target + '+';
+          }
+        };
+        inc();
+        obs.unobserve(el);
+      }
+    });
+  }, options);
+  document.querySelectorAll('.count').forEach(el => observer.observe(el));
+});
+</script>
+</body>
+</html>
